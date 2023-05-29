@@ -20,9 +20,9 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
     private Button averageButton;
     private Adapter adapter;
     private Toast toast;
-    private int sum;
+    private int sum = 0;
     private double average;
-
+    private ArrayList<Integer> selectedGrades;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,6 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         RecyclerView subjectsRecyclerView = findViewById(R.id.gradesRecyclerView);
         mSubjectsList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.subjectsArray)));
         tempList = new ArrayList<>();
-
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {
@@ -41,16 +40,31 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
             }
         }
 
+        selectedGrades = new ArrayList<>(tempList.size());
+        for (int i = 0; i < tempList.size(); i++) {
+            selectedGrades.add(0);
+        }
+
         averageButton.setOnClickListener(averageButtonListener);
 
         adapter = new Adapter(this, tempList);
         adapter.setRadioButtonClickListener(this);
         subjectsRecyclerView.setAdapter(adapter);
         subjectsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        calculateAverage();
     }
     @Override
-    public void onRadioButtonClicked(int value) {
-        sum += value;
+    public void onRadioButtonClicked(int value, int position) {
+        selectedGrades.set(position, value);
+        adapter.setLastSelectedPosition(position);
+        calculateAverage();
+    }
+    private void calculateAverage() {
+        sum = 0;
+        for (int grade : selectedGrades) {
+            sum += grade;
+        }
+        average = (double) sum / selectedGrades.size();
     }
     View.OnClickListener averageButtonListener = view -> {
         average = (double) sum / tempList.size();

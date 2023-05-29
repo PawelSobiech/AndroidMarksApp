@@ -22,7 +22,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
         mSubjectsList = subjectsList;
         mActivity = activity;
     }
+    private int lastSelectedGrade = 0;
+    private int lastSelectedPosition = -1;
+    public int getLastSelectedGrade() {
+        return lastSelectedGrade;
+    }
 
+    public void setLastSelectedGrade(int grade) {
+        lastSelectedGrade = grade;
+    }
+    public int getLastSelectedPosition() {
+        return lastSelectedPosition;
+    }
+    public void setLastSelectedPosition(int pos) {
+        lastSelectedPosition = pos;
+    }
     @NonNull
     @Override
     public MyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,7 +55,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
     }
 
     public interface RadioButtonClickListener {
-        void onRadioButtonClicked(int value);
+        void onRadioButtonClicked(int value, int position); // Dodajemy argument position
     }
 
     public void setRadioButtonClickListener(RadioButtonClickListener listener) {
@@ -99,7 +113,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
                             value = 5;
                         break;
                 }
-                radioButtonClickListener.onRadioButtonClicked(value);
+                radioButtonClickListener.onRadioButtonClicked(value, getAdapterPosition()); // Przekazujemy również pozycję klikniętego elementu
             }
         }
     }
