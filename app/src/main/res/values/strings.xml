@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Lab1-GUI</string>
+    <string name="name">Imię:</string>
+    <string name="nameInput">Wprowadź imię</string>
+    <string name="surname">Nazwisko:</string>
+    <string name="surnameInput">Wprowadź nazwisko</string>
+    <string name="marks">Liczba ocen:</string>
+    <string name="marksInput">Wprowadź liczbę ocen(5-15)</string>
+    <string name="marksButton">OCENY</string>
+    <string name="inputEmptyError">Pole nie może być puste</string>
+    <string name="marksError">Podaj liczbę z przedziału(5-15)</string>
+    <string-array name="subjectsArray">
+        <item>Matematyka</item>
+        <item>Język polski</item>
+        <item>Historia</item>
+        <item>WOS</item>
+        <item>Fizyka</item>
+        <item>Chemia</item>
+        <item>Biologia</item>
+        <item>Informatyka</item>
+        <item>Geografia</item>
+        <item>Język angielski</item>
+        <item>Język niemiecki</item>
+        <item>Język francuski</item>
+        <item>Język hiszpański</item>
+        <item>Plastyka</item>
+        <item>Muzyka</item>
+    </string-array>
+    <string name="computeButton">Oblicz srednia</string>
+    <string name="mark">Ocena:</string>
+    <string name="g2">2</string>
+    <string name="g3">3</string>
+    <string name="g4">4</string>
+    <string name="g5">5</string>
+    <string name="finalMsgp">Gratulacje! Otrzymujesz zaliczenie</string>
+    <string name="finalMsgn">Wysyłam podanie o zaliczenie warunkowe</string>
+    <string name="superMsg">Super</string>
+    <string name="failedMsg">Nie udało się!</string>
+    <string name="averageMsg">Średnia: </string>
+</resources>
