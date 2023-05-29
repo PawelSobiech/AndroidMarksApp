@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -85,7 +86,7 @@
         android:id="@+id/finalButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wyjście"
+        android:text="@string/exit"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
-        android:text="Średnia:"
+        android:text="@string/avg"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/finalButton"
         app:layout_constraintEnd_toEndOf="parent"

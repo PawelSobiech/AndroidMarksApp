@@ -37,4 +37,6 @@
     <string name="superMsg">Super</string>
     <string name="failedMsg">Nie udało się!</string>
     <string name="averageMsg">Średnia: </string>
+    <string name="exit">Wyjście</string>
+    <string name="avg">Średnia:</string>
 </resources>

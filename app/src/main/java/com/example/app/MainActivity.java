@@ -3,6 +3,8 @@ package com.example.app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -170,22 +172,20 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
             }
         }
     }
-/*    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        TextView tv=(TextView) findViewById(R.id.text_view);
-        //findViewById() zwraca element widoku
-        //getText() zwraca CharSequence a nie String
-        outState.putString(KLUCZ,tv.getText().toString());
-        super.onSaveInstanceState(outState);
-    }
     @Override
-    protected void onRestoreInstanceState(Bundle
-                                                  savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        TextView tv=(TextView) findViewById(R.id.text_view);
-        tv.setText(savedInstanceState.getString(KLUCZ));
-    }*/
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Zapisz stan widoku
+        outState.putInt("marksButtonVisibility", marksButton.getVisibility());
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Przywróć stan widoku
+        int marksButtonVisibility = savedInstanceState.getInt("marksButtonVisibility");
+        marksButton.setVisibility(marksButtonVisibility);
+    }
     View.OnClickListener marksButtonListener = view -> {
         Intent intent = new Intent(MainActivity.this, MarksActivity.class);
         intent.putExtra("data", marksTextEdit.getText().toString());
@@ -195,14 +195,15 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
       finalToast.show();
       this.finishAffinity();
     };
-
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
     }
-
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (getCurrentFocus() == null) {
+            return;
+        }
         int editTextId = getCurrentFocus().getId();
         switch (editTextId) {
             case R.id.nameEditText:
@@ -219,10 +220,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         }
         updateButtonVisibility();
     }
-
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
-
 }
