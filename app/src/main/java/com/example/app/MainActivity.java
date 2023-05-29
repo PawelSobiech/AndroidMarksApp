@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
             finalButton.setVisibility(View.VISIBLE);
             averageText.setVisibility(View.VISIBLE);
         }
-
-
         nameTextEdit.setOnFocusChangeListener(nameListener);
         surnameTextEdit.setOnFocusChangeListener(surnameListener);
         marksTextEdit.setOnFocusChangeListener(marksListener);

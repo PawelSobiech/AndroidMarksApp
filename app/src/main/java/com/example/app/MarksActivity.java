@@ -3,16 +3,13 @@ package com.example.app;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 public class MarksActivity extends AppCompatActivity implements Adapter.RadioButtonClickListener {
     private ArrayList<String> mSubjectsList;
@@ -23,6 +20,8 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
     private int sum = 0;
     private double average;
     private ArrayList<Integer> selectedGrades;
+    private static final String SELECTED_GRADES_KEY = "selected_grades";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,24 +40,31 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         }
 
         selectedGrades = new ArrayList<>(tempList.size());
-        for (int i = 0; i < tempList.size(); i++) {
-            selectedGrades.add(0);
+        if (savedInstanceState != null) {
+            // przywrocenie stanu przyciskow radio
+            selectedGrades = savedInstanceState.getIntegerArrayList(SELECTED_GRADES_KEY);
+        } else {
+            selectedGrades = new ArrayList<>(tempList.size());
+            for (int i = 0; i < tempList.size(); i++) {
+                selectedGrades.add(0);
+            }
         }
-
         averageButton.setOnClickListener(averageButtonListener);
 
         adapter = new Adapter(this, tempList);
         adapter.setRadioButtonClickListener(this);
+        adapter.setSelectedGrades(selectedGrades);
         subjectsRecyclerView.setAdapter(adapter);
         subjectsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         calculateAverage();
     }
+
     @Override
     public void onRadioButtonClicked(int value, int position) {
         selectedGrades.set(position, value);
-        adapter.setLastSelectedPosition(position);
         calculateAverage();
     }
+
     private void calculateAverage() {
         sum = 0;
         for (int grade : selectedGrades) {
@@ -66,6 +72,7 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         }
         average = (double) sum / selectedGrades.size();
     }
+
     View.OnClickListener averageButtonListener = view -> {
         average = (double) sum / tempList.size();
         toast = Toast.makeText(this, String.valueOf(average) ,Toast.LENGTH_SHORT);
@@ -74,4 +81,10 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         intent.putExtra("average", Double.toString(average));
         startActivity(intent);
     };
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //zapisanie przyciskow radio
+        outState.putIntegerArrayList(SELECTED_GRADES_KEY, adapter.getSelectedGrades());
+    }
 }

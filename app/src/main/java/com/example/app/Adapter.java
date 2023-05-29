@@ -1,42 +1,43 @@
 package com.example.app;
 
 import android.app.Activity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
     private ArrayList<String> mSubjectsList;
     private Activity mActivity;
     private RadioButtonClickListener radioButtonClickListener;
+    private ArrayList<Integer> selectedGrades;
+    private Map<Integer, Integer> lastSelectedPositions;
 
     public Adapter(Activity activity, ArrayList<String> subjectsList) {
         mSubjectsList = subjectsList;
         mActivity = activity;
+        selectedGrades = new ArrayList<>();
+        lastSelectedPositions = new HashMap<>();
+        for (int i = 0; i < mSubjectsList.size(); i++) {
+            selectedGrades.add(0);
+            lastSelectedPositions.put(i, 0);
+        }
     }
-    private int lastSelectedGrade = 0;
-    private int lastSelectedPosition = -1;
-    public int getLastSelectedGrade() {
-        return lastSelectedGrade;
+    public void setSelectedGrades(ArrayList<Integer> grades) {
+        selectedGrades = grades;
+        notifyDataSetChanged();
     }
 
-    public void setLastSelectedGrade(int grade) {
-        lastSelectedGrade = grade;
+    public ArrayList<Integer> getSelectedGrades() {
+        return selectedGrades;
     }
-    public int getLastSelectedPosition() {
-        return lastSelectedPosition;
-    }
-    public void setLastSelectedPosition(int pos) {
-        lastSelectedPosition = pos;
-    }
+
     @NonNull
     @Override
     public MyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,9 +54,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
     public int getItemCount() {
         return mSubjectsList.size();
     }
-
     public interface RadioButtonClickListener {
-        void onRadioButtonClicked(int value, int position); // Dodajemy argument position
+        void onRadioButtonClicked(int value, int position);
     }
 
     public void setRadioButtonClickListener(RadioButtonClickListener listener) {
@@ -82,8 +82,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
         }
 
         public void bindData(int position) {
-            // Wykorzystaj pozycję, aby ustawić odpowiednie wartości RadioButton
-            // w zależności od stanu danych lub innych kryteriów
+            int grade = selectedGrades.get(position);
+            setCheckedRadioButton(grade);
         }
 
         @Override
@@ -113,8 +113,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
                             value = 5;
                         break;
                 }
-                radioButtonClickListener.onRadioButtonClicked(value, getAdapterPosition()); // Przekazujemy również pozycję klikniętego elementu
+                int position = getAdapterPosition();
+                selectedGrades.set(position, value);
+                lastSelectedPositions.put(position, value);
+                radioButtonClickListener.onRadioButtonClicked(value, position);
+                notifyDataSetChanged();
             }
+        }
+        private void setCheckedRadioButton(int grade) {
+            gradeTwoRadioButton.setChecked(grade == 2);
+            gradeThreeRadioButton.setChecked(grade == 3);
+            gradeFourRadioButton.setChecked(grade == 4);
+            gradeFiveRadioButton.setChecked(grade == 5);
         }
     }
 }
