@@ -36,7 +36,6 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
 
         if (bundle != null) {
             int data = Integer.parseInt(bundle.getString("data"));
-
             for (int i = 0; i < data && i < mSubjectsList.size(); i++) {
                 tempList.add(mSubjectsList.get(i));
             }

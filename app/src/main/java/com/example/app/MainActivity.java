@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextWatcher {
 
     EditText nameTextEdit;
     EditText surnameTextEdit;
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         nameTextEdit.setOnFocusChangeListener(nameListener);
         surnameTextEdit.setOnFocusChangeListener(surnameListener);
         marksTextEdit.setOnFocusChangeListener(marksListener);
+        nameTextEdit.addTextChangedListener(this);
+        surnameTextEdit.addTextChangedListener(this);
+        marksTextEdit.addTextChangedListener(this);
+
         marksButton.setOnClickListener(marksButtonListener);
         finalButton.setOnClickListener(finalButtonListener);
 
@@ -190,4 +195,34 @@ public class MainActivity extends AppCompatActivity {
       finalToast.show();
       this.finishAffinity();
     };
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        int editTextId = getCurrentFocus().getId();
+        switch (editTextId) {
+            case R.id.nameEditText:
+                validateTextInput(nameTextEdit);
+                break;
+            case R.id.surnameEditText:
+                validateTextInput(surnameTextEdit);
+                break;
+            case R.id.marksEditText:
+                validateMarks();
+                break;
+            default:
+                break;
+        }
+        updateButtonVisibility();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
 }
