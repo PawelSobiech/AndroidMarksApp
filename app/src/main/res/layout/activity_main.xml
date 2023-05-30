@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/nametextView"
+        android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
@@ -25,9 +25,9 @@
         android:ems="10"
         android:hint="@string/nameInput"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/nametextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nametextView" />
+        app:layout_constraintStart_toEndOf="@+id/nameTextView" />
 
 
     <TextView

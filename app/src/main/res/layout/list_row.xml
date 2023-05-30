@@ -11,36 +11,32 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
     <RadioGroup
-        android:id="@+id/gradesRadioGroup"
+        android:id="@+id/marksRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <RadioButton
-            android:id="@+id/gradeTwoRadioButton"
+            android:id="@+id/markTwoRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/g2"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/m2"/>
 
         <RadioButton
-            android:id="@+id/gradeThreeRadioButton"
+            android:id="@+id/markThreeRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/g3"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/m3"/>
 
         <RadioButton
-            android:id="@+id/gradeFourRadioButton"
+            android:id="@+id/markFourRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/g4"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/m4"/>
 
         <RadioButton
-            android:id="@+id/gradeFiveRadioButton"
+            android:id="@+id/markFiveRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/g5"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/m5"/>
     </RadioGroup>
 </LinearLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab1-GUI</string>
+    <string name="app_name">Kalkulator średniej ocen</string>
     <string name="name">Imię:</string>
     <string name="nameInput">Wprowadź imię</string>
     <string name="surname">Nazwisko:</string>
@@ -26,17 +26,17 @@
         <item>Plastyka</item>
         <item>Muzyka</item>
     </string-array>
-    <string name="computeButton">Oblicz srednia</string>
+    <string name="computeButton">Oblicz średnia</string>
     <string name="mark">Ocena:</string>
-    <string name="g2">2</string>
-    <string name="g3">3</string>
-    <string name="g4">4</string>
-    <string name="g5">5</string>
+    <string name="m2">2</string>
+    <string name="m3">3</string>
+    <string name="m4">4</string>
+    <string name="m5">5</string>
     <string name="finalMsgp">Gratulacje! Otrzymujesz zaliczenie</string>
     <string name="finalMsgn">Wysyłam podanie o zaliczenie warunkowe</string>
     <string name="superMsg">Super</string>
     <string name="failedMsg">Nie udało się!</string>
     <string name="averageMsg">Średnia: </string>
     <string name="exit">Wyjście</string>
-    <string name="avg">Średnia:</string>
+    <string name="avg">Średnia: </string>
 </resources>
