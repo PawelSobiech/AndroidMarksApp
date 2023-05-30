@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,6 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         mSubjectsList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.subjectsArray)));
         tempList = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
-
         if (bundle != null) {
             int data = Integer.parseInt(bundle.getString("data"));
             for (int i = 0; i < data && i < mSubjectsList.size(); i++) {
@@ -46,7 +46,7 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
         } else {
             selectedGrades = new ArrayList<>(tempList.size());
             for (int i = 0; i < tempList.size(); i++) {
-                selectedGrades.add(0);
+                selectedGrades.add(2);
             }
         }
         averageButton.setOnClickListener(averageButtonListener);
@@ -75,7 +75,7 @@ public class MarksActivity extends AppCompatActivity implements Adapter.RadioBut
 
     View.OnClickListener averageButtonListener = view -> {
         average = (double) sum / tempList.size();
-        toast = Toast.makeText(this, String.valueOf(average) ,Toast.LENGTH_SHORT);
+        toast = Toast.makeText(this, String.valueOf(average), Toast.LENGTH_SHORT);
         toast.show();
         Intent intent = new Intent(MarksActivity.this, MainActivity.class);
         intent.putExtra("average", Double.toString(average));

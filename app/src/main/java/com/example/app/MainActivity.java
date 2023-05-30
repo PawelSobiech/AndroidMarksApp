@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         }
     };
     private void updateButtonVisibility() {
-        if (buttonCheck[0] && buttonCheck[1] && buttonCheck[2]) {
+        if (buttonCheck[0] && buttonCheck[1] && buttonCheck[2] && validateMarks()) {
             marksButton.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             marksButton.setVisibility(View.INVISIBLE);
         }
     }
+
     private void validateTextInput(EditText a)
     {
         if(TextUtils.isEmpty(a.getText().toString()))
@@ -148,25 +148,22 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
             }
         }
     }
-    private void compareEditTexts(EditText a, int place)
-    {
+    private void compareEditTexts(EditText a, int place) {
         EditText t1 = findViewById(R.id.nameEditText);
         EditText t2 = findViewById(R.id.surnameEditText);
-        if(place == 1) {
+        if (place == 1) {
             if (a.getText().toString().equals(t1.getText().toString())) {
                 buttonCheck[0] = false;
-            }
-            else if (a.getText().toString().equals(t2.getText().toString())) {
+            } else if (a.getText().toString().equals(t2.getText().toString())) {
                 buttonCheck[1] = false;
             }
-        }
-        else if(place == 2)
-        {
+        } else if (place == 2) {
             if (a.getText().toString().equals(t1.getText().toString())) {
                 buttonCheck[0] = true;
-            }
-            else if (a.getText().toString().equals(t2.getText().toString())) {
+            } else if (a.getText().toString().equals(t2.getText().toString())) {
                 buttonCheck[1] = true;
+            } else {
+                buttonCheck[2] = true;
             }
         }
     }
@@ -190,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         startActivity(intent);
     };
     View.OnClickListener finalButtonListener = view -> {
-      finalToast.show();
-      this.finishAffinity();
+        finalToast.show();
+        this.finishAffinity();
     };
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

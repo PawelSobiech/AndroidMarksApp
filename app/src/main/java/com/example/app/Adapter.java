@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
     private RadioButtonClickListener radioButtonClickListener;
     private ArrayList<Integer> selectedGrades;
     private Map<Integer, Integer> lastSelectedPositions;
+    private TextView mTv;
 
     public Adapter(Activity activity, ArrayList<String> subjectsList) {
         mSubjectsList = subjectsList;
@@ -74,16 +77,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
             gradeThreeRadioButton = itemView.findViewById(R.id.gradeThreeRadioButton);
             gradeFourRadioButton = itemView.findViewById(R.id.gradeFourRadioButton);
             gradeFiveRadioButton = itemView.findViewById(R.id.gradeFiveRadioButton);
+            mTv = itemView.findViewById(R.id.subjectName);
 
             gradeTwoRadioButton.setOnClickListener(this);
             gradeThreeRadioButton.setOnClickListener(this);
             gradeFourRadioButton.setOnClickListener(this);
             gradeFiveRadioButton.setOnClickListener(this);
         }
-
+        //bląd ze scrollowaniem
         public void bindData(int position) {
             int grade = selectedGrades.get(position);
             setCheckedRadioButton(grade);
+            String subject = mSubjectsList.get(position);
+            mTv.setText(subject);
         }
 
         @Override
@@ -121,6 +127,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyAdapterViewHolder> {
             }
         }
         private void setCheckedRadioButton(int grade) {
+            //błąd - w radio group da się zrobić set checked, to sprawdzić, ustawić domyślną wartość oceny
             gradeTwoRadioButton.setChecked(grade == 2);
             gradeThreeRadioButton.setChecked(grade == 3);
             gradeFourRadioButton.setChecked(grade == 4);
