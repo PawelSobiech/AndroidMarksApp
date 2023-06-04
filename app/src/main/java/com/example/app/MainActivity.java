@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
     Toast toastEmpty;
     Toast toastMarks;
     Toast finalToast;
-    boolean[] buttonCheck = {false, false, false};
+    private EditText focusedEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,25 +37,26 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         marksButton = findViewById(R.id.button);
         finalButton = findViewById(R.id.finalButton);
         averageText = findViewById(R.id.averageText);
-        toastEmpty = Toast.makeText(this, MainActivity.this.getString(R.string.inputEmptyError) ,Toast.LENGTH_SHORT);
-        toastMarks = Toast.makeText(this, MainActivity.this.getString(R.string.marksError) ,Toast.LENGTH_SHORT);
+        toastEmpty = Toast.makeText(this, getString(R.string.inputEmptyError), Toast.LENGTH_SHORT);
+        toastMarks = Toast.makeText(this, getString(R.string.marksError), Toast.LENGTH_SHORT);
 
         Bundle bundleMarks = getIntent().getExtras();
         if (bundleMarks != null) {
             double data = Double.parseDouble(bundleMarks.getString("average"));
 
             if (data >= 3) {
-                finalButton.setText(MainActivity.this.getString(R.string.superMsg));
-                finalToast = Toast.makeText(this, MainActivity.this.getString(R.string.finalMsgp) ,Toast.LENGTH_LONG);
+                finalButton.setText(getString(R.string.superMsg));
+                finalToast = Toast.makeText(this, getString(R.string.finalMsgp), Toast.LENGTH_LONG);
             } else {
-                finalButton.setText( MainActivity.this.getString(R.string.failedMsg));
-                finalToast = Toast.makeText(this, MainActivity.this.getString(R.string.finalMsgn) ,Toast.LENGTH_LONG);
+                finalButton.setText(getString(R.string.failedMsg));
+                finalToast = Toast.makeText(this, getString(R.string.finalMsgn), Toast.LENGTH_LONG);
             }
-            String text =  MainActivity.this.getString(R.string.averageMsg) + data;
+            String text = getString(R.string.averageMsg) + data;
             averageText.setText(text);
             finalButton.setVisibility(View.VISIBLE);
             averageText.setVisibility(View.VISIBLE);
         }
+
         nameTextEdit.setOnFocusChangeListener(nameListener);
         surnameTextEdit.setOnFocusChangeListener(surnameListener);
         marksTextEdit.setOnFocusChangeListener(marksListener);
@@ -65,160 +66,110 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
 
         marksButton.setOnClickListener(marksButtonListener);
         finalButton.setOnClickListener(finalButtonListener);
-
-        updateButtonVisibility();
     }
-    View.OnFocusChangeListener nameListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if(!hasFocus)
-            {
-                validateTextInput(nameTextEdit);
-                updateButtonVisibility();
-            }
-        }
-    };
-    View.OnFocusChangeListener surnameListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if(!hasFocus)
-            {
-                validateTextInput(surnameTextEdit);
-                updateButtonVisibility();
-            }
-        }
-    };
-    View.OnFocusChangeListener marksListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            try{
-                if (!hasFocus) {
-                    validateMarks();
-                    updateButtonVisibility();
-                }
-            }
-            catch (NumberFormatException e) {
-                validateMarks();
-                updateButtonVisibility();
-                marksTextEdit.requestFocus();
-            }
-        }
-    };
+
     private void updateButtonVisibility() {
-        if (buttonCheck[0] && buttonCheck[1] && buttonCheck[2] && validateMarks()) {
+        boolean isNameValid = validateTextInput(nameTextEdit);
+        boolean isSurnameValid = validateTextInput(surnameTextEdit);
+        boolean isMarksValid = validateMarks();
+
+        if (isNameValid && isSurnameValid && isMarksValid) {
             marksButton.setVisibility(View.VISIBLE);
         } else {
             marksButton.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void validateTextInput(EditText a)
-    {
-        if(TextUtils.isEmpty(a.getText().toString()))
-        {
-            a.setError(MainActivity.this.getString(R.string.inputEmptyError));
-            compareEditTexts(a,1);
-            toastEmpty.show();
-        }
-        else
-        {
-            compareEditTexts(a, 2);
-        }
-    }
-
     private boolean validateMarks() {
         String marks = marksTextEdit.getText().toString().trim();
-        if (TextUtils.isEmpty(marks) || !TextUtils.isDigitsOnly(marks)) {
-            marksTextEdit.setError(MainActivity.this.getString(R.string.marksError));
-            buttonCheck[2] = false;
-            toastMarks.show();
+
+        if (TextUtils.isEmpty(marks) && focusedEditText == marksTextEdit) {
+            marksTextEdit.setError(getString(R.string.marksError));
             return false;
         } else {
-            int temp = Integer.parseInt(marks);
-            if (temp < 5 || temp > 15) {
-                marksTextEdit.setError(MainActivity.this.getString(R.string.marksError));
-                buttonCheck[2] = false;
-                toastMarks.show();
+            int temp;
+            try {
+                temp = Integer.parseInt(marks);
+            } catch (NumberFormatException e) {
+                if (focusedEditText == marksTextEdit) {
+                    marksTextEdit.setError(getString(R.string.marksError));
+                }
                 return false;
-            } else {
-                buttonCheck[2] = true;
-                return true;
+            }
+
+            if (temp < 5 || temp > 15) {
+                if (focusedEditText == marksTextEdit) {
+                    marksTextEdit.setError(getString(R.string.marksError));
+                }
+                return false;
             }
         }
-    }
-    private void compareEditTexts(EditText a, int place) {
-        EditText t1 = findViewById(R.id.nameEditText);
-        EditText t2 = findViewById(R.id.surnameEditText);
 
-        if (!t1.getText().toString().equals(t2.getText().toString())) {
-            if (place == 1) {
-                if (a.getText().toString().equals(t1.getText().toString())) {
-                    buttonCheck[0] = false;
-                } else if (a.getText().toString().equals(t2.getText().toString())) {
-                    buttonCheck[1] = false;
-                }
-            } else if (place == 2) {
-                if (a.getText().toString().equals(t1.getText().toString())) {
-                    buttonCheck[0] = true;
-                } else if (a.getText().toString().equals(t2.getText().toString())) {
-                    buttonCheck[1] = true;
-                } else {
-                    buttonCheck[2] = true;
-                }
-            }
+        marksTextEdit.setError(null);
+        return true;
+    }
+
+    private boolean validateTextInput(EditText editText) {
+        String text = editText.getText().toString().trim();
+        if (TextUtils.isEmpty(text) && focusedEditText == editText) {
+            editText.setError(getString(R.string.inputEmptyError));
+            return false;
         } else {
-            buttonCheck[0] = false;
-            buttonCheck[1] = false;
+            editText.setError(null);
+            return true;
         }
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Zapisz stan widoku
-        outState.putInt("marksButtonVisibility", marksButton.getVisibility());
-    }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Przywróć stan widoku
-        int marksButtonVisibility = savedInstanceState.getInt("marksButtonVisibility");
-        marksButton.setVisibility(marksButtonVisibility);
-    }
+    View.OnFocusChangeListener surnameListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                validateTextInput(surnameTextEdit);
+            }
+            focusedEditText = hasFocus ? surnameTextEdit : null;
+            updateButtonVisibility();
+        }
+    };
+
+    View.OnFocusChangeListener nameListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                validateTextInput(nameTextEdit);
+            }
+            focusedEditText = hasFocus ? nameTextEdit : null;
+            updateButtonVisibility();
+        }
+    };
+
+    View.OnFocusChangeListener marksListener = (v, hasFocus) -> {
+        if (!hasFocus) {
+            validateMarks();
+        }
+        focusedEditText = hasFocus ? marksTextEdit : null;
+        updateButtonVisibility();
+    };
+
     View.OnClickListener marksButtonListener = view -> {
         Intent intent = new Intent(MainActivity.this, MarksActivity.class);
         intent.putExtra("data", marksTextEdit.getText().toString());
         startActivity(intent);
     };
+
     View.OnClickListener finalButtonListener = view -> {
         finalToast.show();
-        this.finishAffinity();
+        finishAffinity();
     };
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
     }
+
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (getCurrentFocus() == null) {
-            return;
-        }
-        int editTextId = getCurrentFocus().getId();
-        switch (editTextId) {
-            case R.id.nameEditText:
-                validateTextInput(nameTextEdit);
-                break;
-            case R.id.surnameEditText:
-                validateTextInput(surnameTextEdit);
-                break;
-            case R.id.marksEditText:
-                validateMarks();
-                break;
-            default:
-                break;
-        }
         updateButtonVisibility();
     }
+
     @Override
     public void afterTextChanged(Editable editable) {
     }
