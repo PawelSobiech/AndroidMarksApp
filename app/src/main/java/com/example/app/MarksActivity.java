@@ -66,7 +66,7 @@ public class MarksActivity extends AppCompatActivity {
     }
 
     View.OnClickListener averageButtonListener = view -> {
-        average = (double) sum / tempList.size();
+        calculateAverage();
         Toast toast = Toast.makeText(this, String.valueOf(average), Toast.LENGTH_SHORT);
         toast.show();
         Intent intent = new Intent(MarksActivity.this, MainActivity.class);
